@@ -1,0 +1,12 @@
+[
+  { "stock_name": "The name of the company or organization whose stock information is being represented.",  
+    "industry_type": "The industry category the company belongs to, such as Tech, Retail, or Finance.",  
+    "stock_cap": "Indicates the market capitalization size of the company (large, mid, small).",  
+    "current_stock_price": "The latest trading price of the company's stock.",  
+    "stock_sentiment_value": "Denotes market sentiment towards the stock, rated on a scale from 1 (poor) to 5 (excellent).",  
+    "last_3_months_gain": "Percentage gain or loss of the stock price over the past three months.",  
+    "last_6_months_gain": "Percentage gain or loss of the stock price over the past six months.",  
+    "last_1_year_gain": "Percentage gain or loss of the stock price over the past twelve months.",  
+    "moving_average_30_days": "The average stock price over the last 30 days, reflecting the short-term trend."  
+}  
+]
