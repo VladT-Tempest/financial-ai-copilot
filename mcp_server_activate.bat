@@ -1,1 +1,0 @@
-npx -y mongodb-mcp-server --transport http --httpHost=127.0.0.1 --httpPort=8081 --connectionString="mongodb://admin:password123@localhost:27017/" --loggers stderr
