@@ -1,0 +1,32 @@
+services:
+  # 1. The MongoDB Database
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_stocks
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+    volumes:
+      - mongo_data:/data/db
+
+  # 2. The MCP Server
+  mcp-server:
+    build: .
+    container_name: mcp_server_stocks
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+    # Using Environment Variables instead of CLI flags for the connection string
+    environment:
+      - MDB_MCP_CONNECTION_STRING=mongodb://admin:password123@mongodb:27017/
+    command: >
+      --transport http 
+      --httpHost 0.0.0.0 
+      --httpPort 8081 
+      --loggers stderr
+
+volumes:
+  mongo_data:

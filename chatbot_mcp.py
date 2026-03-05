@@ -7,7 +7,7 @@ from pymongo import MongoClient
 
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_google_genai import ChatGoogleGenerativeAI 
-from langgraph.prebuilt import create_react_agent 
+from langchain.agents import create_agent
 from langgraph.checkpoint.mongodb import MongoDBSaver
 
 # --- 1. Setup ---
@@ -64,20 +64,22 @@ async def chat_function(message: str, history: list):
         system_instruction = (
             "You are a Financial AI Copilot.\n"
             "- When you need data, use the 'find' tool.\n"
-            "- Always pass a JSON object for the 'filter' argument, for example: "
-            "  {'stock_cap': 'large'}.\n"
-            "- IMPORTANT: Do NOT set the 'sort' argument at all. Omit 'sort' from the "
+            "- The 'filter' argument MUST be a JSON object, not a string. "
+            "  Correct: filter: {\"stock_cap\": \"large\"}. "
+            "  Incorrect: filter: \"{'stock_cap': 'large'}\".\n"
+            "- If you do not want to filter, pass an empty object: filter: {}.\n"
+            "- Do NOT set the 'sort' argument at all. Omit 'sort' from the "
             "tool arguments; never pass a string such as 'asc' or 'desc' for 'sort'.\n"
         )
 
         # Use a stable thread_id for this running process (or env override)
         config = {"configurable": {"thread_id": THREAD_ID}}
         
-        agent = create_react_agent(
-            model, 
-            tools=tools, 
+        agent = create_agent(
+            model=model,
+            tools=tools,
+            system_prompt=system_instruction,
             checkpointer=memory,
-            prompt=system_instruction 
         )
 
         # Using a streamlined invocation

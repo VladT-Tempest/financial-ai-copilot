@@ -22,6 +22,7 @@ def get_common_tickers() -> list[str]:
         "JPM",    # JPMorgan Chase
         "V",      # Visa
         "BRK-B",  # Berkshire Hathaway (B shares)
+        "BTC-USD", # Bitcoin 
     ]
 
 
@@ -30,9 +31,10 @@ def fetch_stock_snapshot(ticker: str) -> dict:
     Fetch a single snapshot of common stock information from yfinance.
 
     This keeps the schema small and predictable for use in the copilot.
+    Uses get_info() to avoid the deprecated .info property.
     """
     t = yf.Ticker(ticker)
-    info = t.info or {}
+    info = t.get_info() or {}
 
     # Basic profile + key metrics
     snapshot = {
